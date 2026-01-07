@@ -1,4 +1,5 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 import NavBar from './NavBar'
 import { sampleNews } from '../data/newsData'
 import { Facebook, Instagram, Twitter, Youtube } from 'lucide-react'
@@ -16,11 +17,11 @@ const BreakingNews = () => (
     </div>
 )
 // {/* Featured Component */}
-const Featured = ({ item }) => (
-    <article className="relative bg-gray-100 rounded overflow-hidden hover:shadow-lg transition h-full group cursor-pointer">
+const Featured = ({ item, onClick }) => (
+    <article className="relative bg-gray-100 rounded overflow-hidden hover:shadow-lg transition h-full group cursor-pointer" onClick={onClick}>
         <div className="relative overflow-hidden">
             <img src={item.img} alt="featured" className="w-full h-40 sm:h-52 md:h-80 object-cover group-hover:scale-105 transition duration-300" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+            <div className="absolute inset-0 bg-linear-to-t from-black/60 to-transparent"></div>
         </div>
         <div className="p-3 sm:p-4 absolute bottom-0 left-0 right-0 text-white">
             <span className="inline-block text-xs bg-red-600 px-2 py-1 rounded font-bold mb-2">{item.category}</span>
@@ -31,8 +32,8 @@ const Featured = ({ item }) => (
     </article>
 )
 // {/* News Card Component */}
-const NewsCard = ({ item }) => (
-    <div className="border rounded overflow-hidden bg-white hover:shadow-lg transition flex flex-col h-full group cursor-pointer">
+const NewsCard = ({ item, onClick }) => (
+    <div className="border rounded overflow-hidden bg-white hover:shadow-lg transition flex flex-col h-full group cursor-pointer" onClick={onClick}>
         <div className="relative overflow-hidden h-32 sm:h-36 md:h-40">
             <img src={item.img} alt={item.title} className="w-full h-full object-cover group-hover:scale-110 transition duration-300" />
         </div>
@@ -45,8 +46,8 @@ const NewsCard = ({ item }) => (
     </div>
 )
 // {/* Trending Card Component */}
-const TrendingCard = ({ item }) => (
-    <div className="py-3 border-b hover:bg-gray-50 transition cursor-pointer group">
+const TrendingCard = ({ item, onClick }) => (
+    <div className="py-3 border-b hover:bg-gray-50 transition cursor-pointer group" onClick={onClick}>
         <div className="flex gap-2">
             <img src={item.img} alt={item.title} className="w-16 h-16 object-cover rounded group-hover:opacity-80 transition" />
             <div className="flex-1 min-w-0">
@@ -58,14 +59,14 @@ const TrendingCard = ({ item }) => (
     </div>
 )
 // {/* Category Section Component */}
-const CategorySection = ({ title, items }) => (
+const CategorySection = ({ title, items, onItemClick }) => (
     <section className="mb-8 sm:mb-10">
         <div className="border-l-4 border-red-600 pl-4 mb-4">
             <h2 className="text-xl sm:text-2xl font-bold text-gray-900">{title}</h2>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
             {items.map((item) => (
-                <NewsCard key={item.id} item={item} />
+                <NewsCard key={item.id} item={item} onClick={() => onItemClick(item)} />
 
             ))}
         </div>
@@ -73,8 +74,11 @@ const CategorySection = ({ title, items }) => (
 )
 
 const Home = () => {
+    const navigate = useNavigate()
     const featured = sampleNews[0]
+    const NationalNews = sampleNews.filter(n => n.category === 'National')
     const businessNews = sampleNews.filter(n => n.category === 'Business')
+    const nationalAndBusinessNews = [...NationalNews, ...businessNews]
     const internationalNews = sampleNews.filter(n => n.category === 'International')
     const sportsNews = sampleNews.filter(n => n.category === 'Sports')
     const techNews = sampleNews.filter(n => n.category === 'Technology')
@@ -90,7 +94,7 @@ const Home = () => {
                 <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 sm:gap-6 mb-8 sm:mb-10">
                     {/* Featured Article - 3 columns */}
                     <div className="lg:col-span-3">
-                        <Featured item={featured} />
+                        <Featured item={featured} onClick={() => navigate(`/news/${featured.id}`)} />
                     </div>
 
                     {/* Trending Sidebar */}
@@ -101,10 +105,10 @@ const Home = () => {
                             </div>
                             <div className="p-3 sm:p-4">
                                 {trendingNews.map((item, idx) => (
-                                    <div key={item.id}>
+                                    <div key={item.id} onClick={() => navigate(`/news/${item.id}`)} className="cursor-pointer hover:text-red-600 transition">
                                         <div className="flex items-center gap-2 mb-2">
                                             <span className="text-red-600 font-bold text-lg">{idx + 1}</span>
-                                            <h4 className="font-bold text-sm line-clamp-2 text-gray-900">{item.title}</h4>
+                                            <h4 className="font-bold text-sm line-clamp-2 text-gray-900 hover:text-red-600">{item.title}</h4>
                                         </div>
                                         {idx < trendingNews.length - 1 && <div className="border-b my-3"></div>}
                                     </div>
@@ -115,10 +119,10 @@ const Home = () => {
                 </div>
 
                 {/* Category Sections */}
-                {businessNews.length > 0 && <CategorySection title="National News" items={businessNews} />}
-                {internationalNews.length > 0 && <CategorySection title="International News" items={internationalNews} />}
-                {sportsNews.length > 0 && <CategorySection title="Sports" items={sportsNews} />}
-                {techNews.length > 0 && <CategorySection title="Technology" items={techNews} />}
+                {nationalAndBusinessNews.length > 0 && <CategorySection title="National & Business" items={nationalAndBusinessNews} onItemClick={(item) => navigate(`/news/${item.id}`)} />}
+                {internationalNews.length > 0 && <CategorySection title="International News" items={internationalNews} onItemClick={(item) => navigate(`/news/${item.id}`)} />}
+                {sportsNews.length > 0 && <CategorySection title="Sports" items={sportsNews} onItemClick={(item) => navigate(`/news/${item.id}`)} />}
+                {techNews.length > 0 && <CategorySection title="Technology" items={techNews} onItemClick={(item) => navigate(`/news/${item.id}`)} />}
 
                 {/* All News Grid */}
                 <section className="sm:mb-10">
@@ -127,7 +131,7 @@ const Home = () => {
                     </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
                         {sampleNews.map((item) => (
-                            <NewsCard key={item.id} item={item} />
+                            <NewsCard key={item.id} item={item} onClick={() => navigate(`/news/${item.id}`)} />
                         ))}
                     </div>
                 </section>
@@ -169,7 +173,7 @@ const Home = () => {
                                 <a href="#" className="w-10 h-10 bg-blue-600 rounded flex items-center justify-center hover:bg-blue-700 transition"><Facebook size={20} className="text-white" /></a>
                                 <a href="#" className="w-10 h-10 bg-sky-500 rounded flex items-center justify-center hover:bg-sky-600 transition"><Twitter size={20} className="text-white" /></a>
                                 <a href="#" className="w-10 h-10 bg-red-600 rounded flex items-center justify-center hover:bg-red-700 transition"><Youtube size={20} className="text-white" /></a>
-                                <a href="#" className="w-10 h-10 bg-gradient-to-r from-pink-600 to-purple-600 rounded flex items-center justify-center hover:opacity-70 transition"><Instagram size={20} className="text-white" /></a>
+                                <a href="#" className="w-10 h-10 bg-linear-to-r from-pink-600 to-purple-600 rounded flex items-center justify-center hover:opacity-70 transition"><Instagram size={20} className="text-white" /></a>
                             </div>
                         </div>
                     </div>
