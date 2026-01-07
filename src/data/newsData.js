@@ -1,3 +1,14 @@
+import img1 from '/src/assets/image-1.png';
+import img2 from '/src/assets/image-2.png';
+import img4 from '/src/assets/image-4.png';
+import img5 from '/src/assets/image-5.png';
+import img3 from '/src/assets/image-3.png';
+import img6 from '/src/assets/image-6.png';
+import img7 from '/src/assets/image-7.png';
+import img8 from '/src/assets/image-8.png';
+import img9 from '/src/assets/image-9.png';
+import img10 from '/src/assets/image-10.png';
+import img11 from '/src/assets/image-11.png';
 export const sampleNews = [
     {
         id: 1,
