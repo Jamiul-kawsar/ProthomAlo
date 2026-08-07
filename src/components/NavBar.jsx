@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Menu, X, Facebook, Twitter, Youtube, Instagram, Download } from 'lucide-react'
+import { Menu, X, Download } from 'lucide-react'
 
 const NavBar = () => {
     const menus = ['Home', 'National', 'International', 'Sports', 'Technology', 'Entertainment']
@@ -19,8 +19,8 @@ const NavBar = () => {
 
                 {/* Desktop Navigation */}
                 <nav className="hidden lg:flex items-center gap-3 xl:gap-6">
-                    {menus.map((m) => (
-                        <a key={m} href="#" className="text-gray-700 hover:text-blue-600 text-sm md:text-base font-medium transition">
+                    {menus.map((m,index) => (
+                        <a key={index} href={`#${m.toLowerCase()}`} className="text-gray-700 hover:text-blue-600 text-sm md:text-base font-medium transition">
                             {m}
                         </a>
                     ))}

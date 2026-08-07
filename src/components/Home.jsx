@@ -67,7 +67,6 @@ const CategorySection = ({ title, items, onItemClick }) => (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
             {items.map((item) => (
                 <NewsCard key={item.id} item={item} onClick={() => onItemClick(item)} />
-
             ))}
         </div>
     </section>
@@ -91,7 +90,7 @@ const Home = () => {
 
             <main className="container mx-auto px-3 sm:px-4 py-6 sm:py-8">
                 {/* Main Featured with Sidebar */}
-                <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 sm:gap-6 mb-8 sm:mb-10">
+                <div id="home" className="grid grid-cols-1 lg:grid-cols-4 gap-4 sm:gap-6 mb-8 sm:mb-10">
                     {/* Featured Article - 3 columns */}
                     <div className="lg:col-span-3">
                         <Featured item={featured} onClick={() => navigate(`/news/${featured.id}`)} />
@@ -119,10 +118,10 @@ const Home = () => {
                 </div>
 
                 {/* Category Sections */}
-                {nationalAndBusinessNews.length > 0 && <CategorySection title="National & Business" items={nationalAndBusinessNews} onItemClick={(item) => navigate(`/news/${item.id}`)} />}
-                {internationalNews.length > 0 && <CategorySection title="International News" items={internationalNews} onItemClick={(item) => navigate(`/news/${item.id}`)} />}
-                {sportsNews.length > 0 && <CategorySection title="Sports" items={sportsNews} onItemClick={(item) => navigate(`/news/${item.id}`)} />}
-                {techNews.length > 0 && <CategorySection title="Technology" items={techNews} onItemClick={(item) => navigate(`/news/${item.id}`)} />}
+                {nationalAndBusinessNews.length > 0 && <section id="national"><CategorySection title="National & Business" items={nationalAndBusinessNews} onItemClick={(item) => navigate(`/news/${item.id}`)} /></section>}
+                {internationalNews.length > 0 && <section id="international"><CategorySection title="International News" items={internationalNews} onItemClick={(item) => navigate(`/news/${item.id}`)} /></section>}
+                {sportsNews.length > 0 && <section id="sports"><CategorySection title="Sports" items={sportsNews} onItemClick={(item) => navigate(`/news/${item.id}`)} /></section>}
+                {techNews.length > 0 && <section id="technology"><CategorySection title="Technology" items={techNews} onItemClick={(item) => navigate(`/news/${item.id}`)} /></section>}
 
                 {/* All News Grid */}
                 <section className="sm:mb-10">
